@@ -7,11 +7,15 @@ import { useEffect } from "react";
 const AllAppsPage = () => {
 
   const [apps, setApps] = useState([]);
+  const [totalApps, setTotalApps] = useState(0);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/apps/?limit=10&skip=20`)
+    fetch(`http://localhost:5000/apps/?limit=10&skip=0`)
       .then(res => res.json())
-      .then(data => setApps(data));
+      .then(data => {
+        setApps(data.apps);
+        setTotalApps(data.total);
+      });
   }, []);
 
   return (
@@ -31,7 +35,7 @@ const AllAppsPage = () => {
       <div className="w-11/12 mx-auto flex flex-col-reverse lg:flex-row gap-5 items-start justify-between lg:items-end mt-10">
         <div>
           <h2 className="text-lg underline font-bold">
-            ({apps.length}) Apps Found
+            ({totalApps}) Apps Found
           </h2>
         </div>
 
