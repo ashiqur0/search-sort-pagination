@@ -8,15 +8,20 @@ const AllAppsPage = () => {
 
   const [apps, setApps] = useState([]);
   const [totalApps, setTotalApps] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
+  const limit = 10
 
   useEffect(() => {
-    fetch(`http://localhost:5000/apps/?limit=10&skip=0`)
+    fetch(`http://localhost:5000/apps/?limit=${limit}&skip=0`)
       .then(res => res.json())
       .then(data => {
         setApps(data.apps);
         setTotalApps(data.total);
+
+        const page = Math.ceil(totalApps / limit);
+        setTotalPage(page);
       });
-  }, []);
+  }, [totalApps]);
 
   return (
     <div>
@@ -91,6 +96,14 @@ const AllAppsPage = () => {
           )}
         </div>
       </>
+
+      <div className="flex flex-wrap justify-center gap-3 py-10">
+
+        {/* 0 - 9 */}
+        {
+          [...Array(totalPage).keys()].map(i => <button className="btn">{i}</button>)
+        }
+      </div>
     </div>
   );
 };
