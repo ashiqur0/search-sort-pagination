@@ -52,7 +52,7 @@ app.get("/apps", async (req, res) => {
   // console.log(sort, order);
 
   const sortOption = {};
-  sortOption[sort] = order === 'asc' ? 1: -1;
+  sortOption[sort || 'size'] = order === 'asc' ? 1: -1;
 
   try {
     const apps = await appsCollection

@@ -10,10 +10,12 @@ const AllAppsPage = () => {
   const [totalApps, setTotalApps] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
+  const [sort, setSort] = useState('size');
+  const [order, setOrder] = useState('');
   const limit = 10
 
   useEffect(() => {
-    fetch(`http://localhost:5000/apps/?limit=${limit}&skip=${currentPage * limit}`)
+    fetch(`http://localhost:5000/apps/?limit=${limit}&skip=${currentPage * limit}&sort=${sort}&order=${order}`)
       .then(res => res.json())
       .then(data => {
         setApps(data.apps);
@@ -22,7 +24,15 @@ const AllAppsPage = () => {
         const page = Math.ceil(totalApps / limit);
         setTotalPage(page);
       });
-  }, [totalApps, currentPage]);
+  }, [totalApps, currentPage, sort, order]);
+
+  const handleSelect = (e) => {
+    console.log(e.target.value);
+
+    const sortText = e.target.value;
+    setSort(sortText.split('-')[0]);
+    setOrder(sortText.split('-')[1]);
+  }
 
   return (
     <div>
@@ -68,7 +78,7 @@ const AllAppsPage = () => {
         </form>
 
         <div className="">
-          <select className="select bg-white">
+          <select onChange={handleSelect} className="select bg-white">
             <option selected disabled={true}>
               Sort by <span className="text-xs">R / S / D</span>
             </option>
@@ -93,7 +103,7 @@ const AllAppsPage = () => {
               <button className="btn btn-primary">Show All Apps</button>
             </div>
           ) : (
-            apps.map((app) => <AppCard key={app.id} app={app}></AppCard>)
+            apps.map((app) => <AppCard key={app._id} app={app}></AppCard>)
           )}
         </div>
       </>
@@ -109,12 +119,11 @@ const AllAppsPage = () => {
 
         {/* 0, 1, 2, 3, 4, 5, ... */}
         {
-          [...Array(totalPage).keys()].map(i => (
-            <button
-              onClick={() => setCurrentPage(i)}
-              className={`btn ${i === currentPage && 'btn-primary'}`}
-            >{i + 1}</button>
-          ))
+          [...Array(totalPage).keys()].map(i => <button
+            key={i}
+            onClick={() => setCurrentPage(i)}
+            className={`btn ${i === currentPage && 'btn-primary'}`}
+          >{i + 1}</button>)
         }
 
         {
