@@ -9,10 +9,11 @@ const AllAppsPage = () => {
   const [apps, setApps] = useState([]);
   const [totalApps, setTotalApps] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const limit = 10
 
   useEffect(() => {
-    fetch(`http://localhost:5000/apps/?limit=${limit}&skip=0`)
+    fetch(`http://localhost:5000/apps/?limit=${limit}&skip=${currentPage * limit}`)
       .then(res => res.json())
       .then(data => {
         setApps(data.apps);
@@ -21,7 +22,7 @@ const AllAppsPage = () => {
         const page = Math.ceil(totalApps / limit);
         setTotalPage(page);
       });
-  }, [totalApps]);
+  }, [totalApps, currentPage]);
 
   return (
     <div>
@@ -101,7 +102,12 @@ const AllAppsPage = () => {
 
         {/* 0 - 9 */}
         {
-          [...Array(totalPage).keys()].map(i => <button className="btn">{i}</button>)
+          [...Array(totalPage).keys()].map(i => (
+            <button
+              onClick={() => setCurrentPage(i)}
+              className="btn"
+            >{i}</button>
+          ))
         }
       </div>
     </div>
