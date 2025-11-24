@@ -105,7 +105,7 @@ const AllAppsPage = () => {
           [...Array(totalPage).keys()].map(i => (
             <button
               onClick={() => setCurrentPage(i)}
-              className="btn"
+              className={`btn ${i === currentPage && 'btn-primary'}`}
             >{i}</button>
           ))
         }
