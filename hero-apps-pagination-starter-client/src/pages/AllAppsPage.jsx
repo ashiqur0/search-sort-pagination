@@ -99,7 +99,12 @@ const AllAppsPage = () => {
       </>
 
       <div className="flex flex-wrap justify-center gap-3 py-10">
+        <button
+          onClick={ () => setCurrentPage(currentPage - 1)}
+          className="btn"
+        >Prev
 
+        </button>
         {/* 0 - 9 */}
         {
           [...Array(totalPage).keys()].map(i => (
@@ -109,6 +114,12 @@ const AllAppsPage = () => {
             >{i}</button>
           ))
         }
+        <button
+          onClick={ () => setCurrentPage(currentPage + 1)}
+          className="btn"
+        >Next
+
+        </button>
       </div>
     </div>
   );
