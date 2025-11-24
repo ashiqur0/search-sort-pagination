@@ -107,7 +107,7 @@ const AllAppsPage = () => {
           </button>
         }
 
-        {/* 0 - 9 */}
+        {/* 0, 1, 2, 3, 4, 5, ... */}
         {
           [...Array(totalPage).keys()].map(i => (
             <button

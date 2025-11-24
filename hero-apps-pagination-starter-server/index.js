@@ -48,10 +48,16 @@ const appsCollection = database.collection("apps");
 //Apps Route
 
 app.get("/apps", async (req, res) => {
-  const {limit, skip} = req.query;
+  const {limit, skip, sort='size', order='desc'} = req.query;
+  // console.log(sort, order);
+
+  const sortOption = {};
+  sortOption[sort] = order === 'asc' ? 1: -1;
+
   try {
     const apps = await appsCollection
     .find()
+    .sort(sortOption)
     .limit(Number(limit))
     .skip(Number(skip))
     .project({description: 0})
