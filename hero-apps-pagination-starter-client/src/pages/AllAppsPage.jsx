@@ -1,10 +1,19 @@
 import { DiVisualstudio } from "react-icons/di";
 import AppCard from "../ui/AppCard";
 
-import { useLoaderData } from "react-router";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const AllAppsPage = () => {
-  const apps = useLoaderData();
+
+  const [apps, setApps] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/apps/?limit=10&skip=20`)
+      .then(res => res.json())
+      .then(data => setApps(data));
+  }, []);
+
   return (
     <div>
       <title>All Apps | Hero Apps</title>

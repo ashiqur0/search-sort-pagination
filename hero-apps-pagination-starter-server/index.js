@@ -11,8 +11,7 @@ app.use(express.json());
 
 app.use(async (req, res, next) => {
   console.log(
-    `⚡ ${req.method} - ${req.path} from ${
-      req.host
+    `⚡ ${req.method} - ${req.path} from ${req.host
     } at ⌛ ${new Date().toLocaleString()}`
   );
   next();
@@ -20,7 +19,7 @@ app.use(async (req, res, next) => {
 
 //ports & clients
 const port = process.env.PORT || 5000;
-const uri = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@mern-cluster.voqlfwt.mongodb.net/?appName=mern-cluster`;
+const uri = "mongodb+srv://herodbadmin:VE891xPNSPQiGGqz@cluster0.edix7i0.mongodb.net/?appName=Cluster0";
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -49,8 +48,14 @@ const appsCollection = database.collection("apps");
 //Apps Route
 
 app.get("/apps", async (req, res) => {
+  const {limit, skip} = req.query;
   try {
-    const apps = await appsCollection.find().toArray();
+    const apps = await appsCollection
+    .find()
+    .limit(Number(limit))
+    .skip(Number(skip))
+    .project({description: 0})
+    .toArray();
     res.send(apps);
   } catch (error) {
     console.log(error);
